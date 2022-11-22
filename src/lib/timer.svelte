@@ -1,41 +1,48 @@
 <script>
   let interval = null;
   let running = false;
-  let now = 0;
+  //let now = 0;
 
-  $: ms = 0;
-  $: s = 0;
-  $: min = 0;
-  $: hr = 0;
+  $: ms = pad3(0);
+  $: s = pad2(0);
+  $: min = pad2(0);
+  $: hr = pad2(0);
 
   const pad2 = (number) => `00${number}`.slice(-2);
   const pad3 = (number) => `000${number}`.slice(-3);
 
-  const start = () => {
+  const countUp = () => {
+    const startTime = Date.now();
     interval = setInterval(() => {
       running = true;
-      now++;
-      let count = now;
-
-      hr = Math.floor(count / 3600000);
-      count -= hr * 360000;
-
-      min = Math.floor(count / 60000);
-      count -= min * 600;
-
-      s = Math.floor(count / 1000);
-      count -= s * 1000;
-
-      ms = count;
-
+      const elapsed = Date.now() - startTime;
+      
+      ms = pad3(elapsed);
+      s = pad2(Math.floor(elapsed / 1000) % 60);
+      min = pad2(Math.floor(elapsed / 60000) % 60);
+      hr = pad2(Math.floor(elapsed / 3600000) % 60);
     });
+  }
+
+  const countDown = () => {
+
+  }
+
+  const start = () => {
+    if(!running) {
+      countUp();
+    }
+    else {
+      countDown();
+    }
   }
   const stop = () => {
     clearInterval(interval);
     running = false;
   }
   const reset = () => {
-    ms = s = min = hr = now = 0;
+    s = min = hr = pad2(0);
+    ms = pad3(0);
   }
 
 </script>
@@ -44,7 +51,7 @@
 
 <div class='time'>{hr}:{min}:{s}.{ms}</div>
 
-<button class='start' disabled={running} on:click={start}>start</button>
+<button class='start' disabled={running} on:click={start}>{running ? `rest` : `start`}</button>
 <button class='stop' on:click={stop}>stop</button>
 <button class='reset' on:click={reset}>reset</button>
 
