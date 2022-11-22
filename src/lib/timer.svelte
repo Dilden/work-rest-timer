@@ -1,7 +1,9 @@
 <script>
   let interval = null;
   let running = false;
-  //let now = 0;
+  let elapsed = 0;
+  let oldElapsed = 0;
+  let startTime = null;
 
   $: ms = pad3(0);
   $: s = pad2(0);
@@ -12,10 +14,11 @@
   const pad3 = (number) => `000${number}`.slice(-3);
 
   const countUp = () => {
-    const startTime = Date.now();
+    startTime = Date.now();
+    running = true;
+
     interval = setInterval(() => {
-      running = true;
-      const elapsed = Date.now() - startTime;
+      elapsed = Date.now() - startTime + oldElapsed;
       
       ms = pad3(elapsed);
       s = pad2(Math.floor(elapsed / 1000) % 60);
@@ -25,7 +28,6 @@
   }
 
   const countDown = () => {
-
   }
 
   const start = () => {
@@ -38,11 +40,13 @@
   }
   const stop = () => {
     clearInterval(interval);
+    oldElapsed = elapsed;
     running = false;
   }
   const reset = () => {
     s = min = hr = pad2(0);
     ms = pad3(0);
+    elapsed = oldElapsed = 0;
   }
 
 </script>
@@ -51,9 +55,11 @@
 
 <div class='time'>{hr}:{min}:{s}.{ms}</div>
 
-<button class='start' disabled={running} on:click={start}>{running ? `rest` : `start`}</button>
-<button class='stop' on:click={stop}>stop</button>
-<button class='reset' on:click={reset}>reset</button>
+<div class='controls'>
+  <button class='start' on:click={start}>{running ? `rest` : `start`}</button>
+  <button class='stop' on:click={stop}>stop</button>
+  <button class='reset' on:click={reset}>reset</button>
+</div>
 
 <style>
   h1 {
@@ -63,26 +69,38 @@
     margin: 1.5rem;
     font-size: 4rem;
   }
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
   button {
-    padding: 1.4rem 1.8rem;
-    margin: 1.3rem;
+    padding: 1.1rem 1.4rem;
+    margin: 1.1rem;
+    font-size: 1.5rem;
     border: none;
     background-color: #496bf0;
     color: white;
     transition: all .4s ease-in-out;
     cursor: pointer;
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
   }
   button:hover {
     background-color: #2047df;
   }
   button.stop {
     background-color: #df3d2c;
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
   }
   button.stop:hover {
     background-color: #a81303;
   }
   button.start {
     background-color: #408e2a;
+    grid-column: 2 / 4;
+    grid-row: 1 / 2;
   }
   button.start:hover {
     background-color: #245e14;
