@@ -4,6 +4,8 @@
   let elapsed = 0;
   let oldElapsed = 0;
   let startTime = null;
+  let factor = 1;
+  let totalTime = null;
 
   $: ms = pad3(0);
   $: s = pad2(0);
@@ -28,6 +30,24 @@
   }
 
   const countDown = () => {
+    stop();
+    const end = Date.now() + (elapsed  * factor);
+    
+    interval = setInterval(() => {
+      let now = Date.now();
+      let diff = end - now;
+      
+      ms = pad3(diff);
+      s = pad2(Math.floor(diff / 1000) % 60);
+      min = pad2(Math.floor(diff / 60000) % 60);
+      hr = pad2(Math.floor(diff / 3600000) % 60);
+
+      if(diff <= 0) {
+        clearInterval(interval);
+        reset();
+        countUp();
+      }
+    });
   }
 
   const start = () => {
