@@ -5,7 +5,7 @@
   let oldElapsed = 0;
   let startTime = null;
   let factor = 1;
-  let totalTime = null;
+  //let totalTime = null;
 
   $: ms = pad3(0);
   $: s = pad2(0);
@@ -14,6 +14,19 @@
 
   const pad2 = (number) => `00${number}`.slice(-2);
   const pad3 = (number) => `000${number}`.slice(-3);
+
+  const warning = (x = 3) => {
+    //const audio = new Audio('static/beep.wav');
+    //let count = 0;
+
+    //let sound = setInterval(() => {
+    //  audio.play(); 
+    //  if(count == x) {
+    //    clearInterval(sound);
+    //  }
+    //  count++;
+    //}, 1000);
+  }
 
   const countUp = () => {
     startTime = Date.now();
@@ -42,6 +55,9 @@
       min = pad2(Math.floor(diff / 60000) % 60);
       hr = pad2(Math.floor(diff / 3600000) % 60);
 
+      if(diff <= 3600 && diff >= 3300) {
+        warning();
+      }
       if(diff <= 0) {
         clearInterval(interval);
         reset();
