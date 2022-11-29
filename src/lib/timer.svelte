@@ -3,9 +3,8 @@
   let running = false;
   let elapsed = 0;
   let oldElapsed = 0;
-  let startTime = null;
   let factor = 1;
-  //let totalTime = null;
+  // TODO add totalTimer
 
   $: ms = pad3(0);
   $: s = pad2(0);
@@ -15,21 +14,14 @@
   const pad2 = (number) => `00${number}`.slice(-2);
   const pad3 = (number) => `000${number}`.slice(-3);
 
-  const warning = (x = 3) => {
-    //const audio = new Audio('static/beep.wav');
-    //let count = 0;
-
-    //let sound = setInterval(() => {
-    //  audio.play(); 
-    //  if(count == x) {
-    //    clearInterval(sound);
-    //  }
-    //  count++;
-    //}, 1000);
+  const warning = () => {
+    const audio = new Audio('static/beep.wav');
+    audio.volume = 0.75;
+    audio.play(); 
   }
 
   const countUp = () => {
-    startTime = Date.now();
+    let startTime = Date.now();
     running = true;
 
     interval = setInterval(() => {
@@ -44,21 +36,26 @@
 
   const countDown = () => {
     stop();
-    const end = Date.now() + (elapsed  * factor);
+    const now = Date.now();
+    const end = now + (elapsed  * factor);
+
+    // Don't play the 3.5s audio file if less time than that has passed
+    if(elapsed >= 4000) {
+      setTimeout(() => {
+        warning();
+      }, elapsed - 4000);
+    }
     
     interval = setInterval(() => {
-      let now = Date.now();
-      let diff = end - now;
+      elapsed = end - Date.now();
       
-      ms = pad3(diff);
-      s = pad2(Math.floor(diff / 1000) % 60);
-      min = pad2(Math.floor(diff / 60000) % 60);
-      hr = pad2(Math.floor(diff / 3600000) % 60);
+      ms = pad3(elapsed);
+      s = pad2(Math.floor(elapsed / 1000) % 60);
+      min = pad2(Math.floor(elapsed / 60000) % 60);
+      hr = pad2(Math.floor(elapsed / 3600000) % 60);
 
-      if(diff <= 3600 && diff >= 3300) {
-        warning();
-      }
-      if(diff <= 0) {
+      // TODO add beep sounds
+      if(elapsed <= 0) {
         clearInterval(interval);
         reset();
         countUp();
@@ -77,12 +74,13 @@
   const stop = () => {
     clearInterval(interval);
     oldElapsed = elapsed;
-    running = false;
   }
   const reset = () => {
     s = min = hr = pad2(0);
     ms = pad3(0);
     elapsed = oldElapsed = 0;
+    running = false;
+    clearInterval(interval);
   }
 
 </script>
@@ -92,7 +90,7 @@
 <div class='time'>{hr}:{min}:{s}.{ms}</div>
 
 <div class='controls'>
-  <button class='start' on:click={start}>{running ? `rest` : `start`}</button>
+  <button class='{running ? `rest` : `start`}' on:click={start}>{running ? `rest` : `start`}</button>
   <button class='stop' on:click={stop}>stop</button>
   <button class='reset' on:click={reset}>reset</button>
 </div>
@@ -140,5 +138,10 @@
   }
   button.start:hover {
     background-color: #245e14;
+  }
+  button.rest {
+    background-color: #8e882a;
+    grid-column: 2 / 4;
+    grid-row: 1 / 2;
   }
 </style>
