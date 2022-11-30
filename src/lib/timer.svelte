@@ -40,10 +40,10 @@
     const end = now + (elapsed  * factor);
 
     // Don't play the 3.5s audio file if less time than that has passed
-    if(elapsed >= 4000) {
+    if((elapsed * factor) >= 3500) {
       setTimeout(() => {
         warning();
-      }, elapsed - 4000);
+      }, (elapsed * factor) - 3500);
     }
     
     interval = setInterval(() => {
@@ -92,6 +92,10 @@
   <button class='{running ? `rest` : `start`}' on:click={start}>{running ? `rest` : `start`}</button>
   <button class='stop' on:click={stop}>stop</button>
   <button class='reset' on:click={reset}>reset</button>
+  <div class='rest_factor'>
+    <p>Rest Multiplier</p>
+    <input type='radio' id='1X' name='factor' bind:group={factor} value={1} checked><label for='1X'>1X</label><input type='radio' id='1.5X' name='factor' bind:group={factor} value={1.5}><label for='1.5X'>1.5X</label><input type='radio' id='2X' name='factor' bind:group={factor} value={2}><label for='2X'>2X</label><input type='radio' id='3X' name='factor' bind:group={factor} value={3}><label for='3X'>3X</label>
+  </div>
 </div>
 
 <style>
@@ -104,7 +108,7 @@
   }
   .controls {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
   }
   button {
@@ -142,5 +146,35 @@
     background-color: #8e882a;
     grid-column: 2 / 4;
     grid-row: 1 / 2;
+  }
+  .rest_factor {
+    grid-column: 4 / 5;
+    grid-row: 1 / 2;
+    text-transform: uppercase;
+    vertical-align: top;
+  }
+  .rest_factor input {
+    display: none;
+  }
+  .rest_factor input:checked+label {
+    background-color: #3e3c3c;
+    box-shadow: inset 0 0 5px black;
+  }
+  .rest_factor label {
+    display: inline-block;
+    padding: 1rem;
+    background-color: gray;
+    margin: 0;
+    transition: all .3s ease-in-out;
+    border: solid 1px black;
+  }
+  .rest_factor label:hover {
+    background-color: #666262;
+  }
+  .rest_factor label:nth-child(3) {
+    border-radius: 1rem 0 0 1rem;
+  }
+  .rest_factor label:last-child {
+    border-radius: 0 1rem 1rem 0;
   }
 </style>
