@@ -1,15 +1,23 @@
 <script>
   let interval = null;
+  let totalInterval = null;
+  let timeout = null;
   let running = false;
   let elapsed = 0;
   let oldElapsed = 0;
   let factor = 1;
-  // TODO add totalTimer
+
+  let totalElapsed = 0;
+  let totalOldElapsed = 0;
 
   $: ms = pad3(0);
   $: s = pad2(0);
   $: min = pad2(0);
   $: hr = pad2(0);
+  $: totalMs = pad3(0);
+  $: totalS = pad2(0);
+  $: totalMin = pad2(0);
+  $: totalHr = pad2(0);
 
   const pad2 = (number) => `00${number}`.slice(-2);
   const pad3 = (number) => `000${number}`.slice(-3);
@@ -27,7 +35,7 @@
     interval = setInterval(() => {
       elapsed = Date.now() - startTime + oldElapsed;
       
-      ms = pad3(elapsed);
+      ms = pad3(Math.floor(elapsed));
       s = pad2(Math.floor(elapsed / 1000) % 60);
       min = pad2(Math.floor(elapsed / 60000) % 60);
       hr = pad2(Math.floor(elapsed / 3600000) % 24);
@@ -41,7 +49,7 @@
 
     // Don't play the 3.5s audio file if less time than that has passed
     if((elapsed * factor) >= 3500) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         warning();
       }, (elapsed * factor) - 3500);
     }
@@ -49,18 +57,33 @@
     interval = setInterval(() => {
       elapsed = end - Date.now();
       
-      ms = pad3(elapsed);
+      ms = pad3(Math.floor(elapsed));
       s = pad2(Math.floor(elapsed / 1000) % 60);
       min = pad2(Math.floor(elapsed / 60000) % 60);
       hr = pad2(Math.floor(elapsed / 3600000) % 24);
 
       if(elapsed <= 0) {
-        clearInterval(interval);
-        reset();
+        interval = clearInterval(interval);
+        elapsed = oldElapsed = 0;
+        running = false;
+        s = min = hr = pad2(0);
+        ms = pad3(0);
         countUp();
       }
     });
   }
+
+  const totalStart = () => {
+    let startTime = Date.now();
+    totalInterval = setInterval(() => {
+      totalElapsed = Date.now() - startTime + totalOldElapsed;
+      
+      totalMs = pad3(totalElapsed);
+      totalS = pad2(Math.floor(totalElapsed / 1000) % 60);
+      totalMin = pad2(Math.floor(totalElapsed / 60000) % 60);
+      totalHr = pad2(Math.floor(totalElapsed / 3600000) % 24);
+    });
+ }
 
   const start = () => {
     if(!running) {
@@ -69,17 +92,25 @@
     else {
       countDown();
     }
+    if(!totalInterval) {
+      totalStart();
+    }
   }
   const stop = () => {
-    clearInterval(interval);
+    interval = clearInterval(interval);
+    totalInterval = clearInterval(totalInterval);
+    timeout = clearTimeout(timeout);
     oldElapsed = elapsed;
+    totalOldElapsed = totalElapsed;
   }
   const reset = () => {
-    s = min = hr = pad2(0);
-    ms = pad3(0);
-    elapsed = oldElapsed = 0;
+    totalS = s = totalMin = min = totalHr = hr = pad2(0);
+    totalMs = ms = pad3(0);
+    totalElapsed = totalOldElapsed = elapsed = oldElapsed = 0;
     running = false;
-    clearInterval(interval);
+    interval = clearInterval(interval);
+    totalInterval = clearInterval(totalInterval);
+    timeout = clearTimeout(timeout);
   }
 
 </script>
@@ -87,6 +118,7 @@
 <h1>Work:Rest Timer</h1>
 
 <div class='time'>{hr}:{min}:{s}.{ms}</div>
+<div class='total_time'>{totalHr}:{totalMin}:{totalS}.{totalMs}</div>
 
 <div class='controls'>
   <button class='{running ? `rest` : `start`}' on:click={start}>{running ? `rest` : `start`}</button>
@@ -105,6 +137,9 @@
   .time {
     margin: 1.5rem;
     font-size: 4rem;
+  }
+  .total_time {
+    font-size: 1.5rem;
   }
   .controls {
     display: grid;
