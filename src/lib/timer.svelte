@@ -15,7 +15,7 @@
   const pad3 = (number) => `000${number}`.slice(-3);
 
   const warning = () => {
-    const audio = new Audio('static/beep.wav');
+    const audio = new Audio('/beep.wav');
     audio.volume = 0.75;
     audio.play(); 
   }
@@ -30,7 +30,7 @@
       ms = pad3(elapsed);
       s = pad2(Math.floor(elapsed / 1000) % 60);
       min = pad2(Math.floor(elapsed / 60000) % 60);
-      hr = pad2(Math.floor(elapsed / 3600000) % 60);
+      hr = pad2(Math.floor(elapsed / 3600000) % 24);
     });
   }
 
@@ -52,9 +52,8 @@
       ms = pad3(elapsed);
       s = pad2(Math.floor(elapsed / 1000) % 60);
       min = pad2(Math.floor(elapsed / 60000) % 60);
-      hr = pad2(Math.floor(elapsed / 3600000) % 60);
+      hr = pad2(Math.floor(elapsed / 3600000) % 24);
 
-      // TODO add beep sounds
       if(elapsed <= 0) {
         clearInterval(interval);
         reset();
@@ -85,7 +84,7 @@
 
 </script>
 
-<h1>Work+Rest Timer</h1>
+<h1>Work:Rest Timer</h1>
 
 <div class='time'>{hr}:{min}:{s}.{ms}</div>
 
