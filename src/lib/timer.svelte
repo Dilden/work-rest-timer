@@ -100,14 +100,19 @@
     interval = clearInterval(interval);
     totalInterval = clearInterval(totalInterval);
     timeout = clearTimeout(timeout);
+
     oldElapsed = elapsed;
     totalOldElapsed = totalElapsed;
+
+    running = !running;
   }
   const reset = () => {
     totalS = s = totalMin = min = totalHr = hr = pad2(0);
     totalMs = ms = pad3(0);
     totalElapsed = totalOldElapsed = elapsed = oldElapsed = 0;
+    
     running = false;
+
     interval = clearInterval(interval);
     totalInterval = clearInterval(totalInterval);
     timeout = clearTimeout(timeout);
@@ -121,7 +126,7 @@
 <div class='total_time'>{totalHr}:{totalMin}:{totalS}.{totalMs}</div>
 
 <div class='controls'>
-  <button class='{running ? `rest` : `start`}' on:click={start}>{running ? `rest` : `start`}</button>
+  <button class='start_button {running ? `rest` : `start`}' on:click={start}>{running ? `rest` : `start`}</button>
   <button class='stop' on:click={stop}>stop</button>
   <button class='reset' on:click={reset}>reset</button>
   <div class='rest_factor'>
