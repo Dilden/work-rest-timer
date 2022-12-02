@@ -1,13 +1,13 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import path from 'path';
 import basicSsl from '@vitejs/plugin-basic-ssl';
-import { VitePWA } from 'vite-plugin-pwa';
+import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 
 const config = {
   plugins: [
     sveltekit(),
     basicSsl(),
-    VitePWA({
+    SvelteKitPWA({
       registerType: 'prompt',
       devOptions: {
         enabled: true
@@ -22,7 +22,7 @@ const config = {
         description: 'A timer that tracks active + rest time. And it reminds you to start!',
         theme_color: '#000000',
         background_color: '#213439',
-        start_url: '/',
+        start_url: '/timer/',
         icons: [
           {
             src: 'timer.png',

@@ -6,6 +6,7 @@
   let elapsed = 0;
   let oldElapsed = 0;
   let factor = 1;
+  let disabled = false;
 
   let totalElapsed = 0;
   let totalOldElapsed = 0;
@@ -33,6 +34,7 @@
 
   const countUp = () => {
     running = true;
+    disabled = false;
     let startTime = Date.now();
 
     interval = setInterval(() => {
@@ -47,6 +49,7 @@
 
   const countDown = () => {
     timerStop();
+    disabled = true;
     addActiveSplit(`${hr}:${min}:${s}:${ms}`);
     const now = Date.now();
     const beepStart = elapsed * factor; // TODO don't use factor on rest if stop button pressed
@@ -121,7 +124,7 @@
   }
   const stop = () => {
     timerStop();
-    running = false;
+    disabled = false;
   }
   const reset = () => {
     totalS = s = totalMin = min = totalHr = hr = pad2(0);
@@ -129,6 +132,7 @@
     totalElapsed = totalOldElapsed = elapsed = oldElapsed = 0;
     
     running = false;
+    disabled = false;
 
     activeSplits = restSplits = [];
 
@@ -145,7 +149,7 @@
 <div class='total_time'>{totalHr}:{totalMin}:{totalS}.{totalMs}</div>
 
 <div class='controls'>
-  <button class='start_button {running ? `rest` : `start`}' on:click={start}>{running ? `rest` : `start`}</button>
+  <button class='start_button {running ? `rest` : `start`}' disabled={disabled ? `disabled` : ``} on:click={start}>{running ? `rest` : `start`}</button>
   <button class='stop' on:click={stop}>stop</button>
   <button class='reset' on:click={reset}>reset</button>
   <div class='rest_factor'>
@@ -212,6 +216,10 @@
   button:hover {
     background-color: #2047df;
   }
+  button:disabled {
+    cursor: not-allowed;
+    background-color: #7d7c7c !important;
+  }
   button.stop {
     background-color: #df3d2c;
     grid-column: 2 / 3;
@@ -262,5 +270,20 @@
   }
   .rest_factor label:last-child {
     border-radius: 0 1rem 1rem 0;
+  }
+
+  @media screen and (max-width: 1200px) {
+    .controls {
+      grid-template-columns: .05fr 1fr 1fr 1fr .05fr;
+    }
+  }
+  @media screen and (max-width: 750px) {
+    .rest_factor label, .rest_factor label:nth-child(3), .rest_factor label:last-child {
+      border-radius: 0;
+      min-width: 72px;
+    }
+    .rest_factor {
+      grid-row: 1 / 3;
+    }
   }
 </style>
