@@ -10,6 +10,9 @@
   let totalElapsed = 0;
   let totalOldElapsed = 0;
 
+  $: activeSplits = [];
+  $: restSplits = [];
+
   $: ms = pad3(0);
   $: s = pad2(0);
   $: min = pad2(0);
@@ -29,8 +32,8 @@
   }
 
   const countUp = () => {
-    let startTime = Date.now();
     running = true;
+    let startTime = Date.now();
 
     interval = setInterval(() => {
       elapsed = Date.now() - startTime + oldElapsed;
@@ -43,15 +46,17 @@
   }
 
   const countDown = () => {
-    stop();
+    timerStop();
+    addActiveSplit(`${hr}:${min}:${s}:${ms}`);
     const now = Date.now();
-    const end = now + (elapsed  * factor);
+    const beepStart = elapsed * factor; // TODO don't use factor on rest if stop button pressed
+    const end = now + beepStart;
 
-    // Don't play the 3.5s audio file if less time than that has passed
-    if((elapsed * factor) >= 3500) {
+    // Only play the 3.5s audio file if less time than that has passed
+    if(beepStart >= 3500) {
       timeout = setTimeout(() => {
         warning();
-      }, (elapsed * factor) - 3500);
+      }, beepStart - 3500);
     }
     
     interval = setInterval(() => {
@@ -64,6 +69,7 @@
 
       if(elapsed <= 0) {
         interval = clearInterval(interval);
+        addRestSplit(`${pad2(Math.floor(beepStart / 3600000) % 24)}:${pad2(Math.floor(beepStart / 60000) % 60)}:${pad2(Math.floor(beepStart / 1000) % 60)}:${pad3(Math.floor(beepStart))}`);
         elapsed = oldElapsed = 0;
         running = false;
         s = min = hr = pad2(0);
@@ -71,6 +77,15 @@
         countUp();
       }
     });
+  }
+
+  const addActiveSplit = (time) => {
+    activeSplits.push(time);
+    activeSplits = activeSplits;
+  }
+  const addRestSplit = (time) => {
+    restSplits.push(time);
+    restSplits = restSplits;
   }
 
   const totalStart = () => {
@@ -89,22 +104,24 @@
     if(!running) {
       countUp();
     }
-    else {
+    else{
       countDown();
     }
     if(!totalInterval) {
       totalStart();
     }
   }
-  const stop = () => {
+  const timerStop = () => {
     interval = clearInterval(interval);
     totalInterval = clearInterval(totalInterval);
     timeout = clearTimeout(timeout);
 
     oldElapsed = elapsed;
     totalOldElapsed = totalElapsed;
-
-    running = !running;
+  }
+  const stop = () => {
+    timerStop();
+    running = false;
   }
   const reset = () => {
     totalS = s = totalMin = min = totalHr = hr = pad2(0);
@@ -112,6 +129,8 @@
     totalElapsed = totalOldElapsed = elapsed = oldElapsed = 0;
     
     running = false;
+
+    activeSplits = restSplits = [];
 
     interval = clearInterval(interval);
     totalInterval = clearInterval(totalInterval);
@@ -134,14 +153,41 @@
     <input type='radio' id='1X' name='factor' bind:group={factor} value={1} checked><label for='1X'>1X</label><input type='radio' id='1.5X' name='factor' bind:group={factor} value={1.5}><label for='1.5X'>1.5X</label><input type='radio' id='2X' name='factor' bind:group={factor} value={2}><label for='2X'>2X</label><input type='radio' id='3X' name='factor' bind:group={factor} value={3}><label for='3X'>3X</label>
   </div>
 </div>
+<div class='intervals'>
+  <div class='splits active'>
+    <h3>Active Intervals</h3>
+    <ul>
+      {#each activeSplits as split, i}
+        <li>{(i+1) + `) ` + split}</li>
+      {/each}
+    </ul>
+  </div>
+  <div class='splits rest'>
+    <h3>Rest Intervals</h3>
+    <ul>
+      {#each restSplits as split, i}
+        <li>{(i+1) + `) ` + split}</li>
+      {/each}
+    </ul>
+  </div>
+</div>
 
 <style>
   h1 {
     text-align: center;
+    text-transform: uppercase;
   }
   .time {
     margin: 1.5rem;
     font-size: 4rem;
+  }
+  .intervals {
+    text-transform: uppercase;
+  }
+  .splits {
+    display: inline-block;
+    vertical-align: top;
+    margin: 1rem;
   }
   .total_time {
     font-size: 1.5rem;
