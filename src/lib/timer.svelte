@@ -195,6 +195,12 @@
     vertical-align: top;
     margin: 1rem;
   }
+  .splits ul {
+    padding: 0;
+  }
+  .splits li {
+    list-style: none;
+  }
   .total_time {
     font-size: 1.5rem;
   }
@@ -286,6 +292,16 @@
     }
     .rest_factor {
       grid-row: 1 / 3;
+    }
+    .time {
+      margin: .8rem;
+      font-size: 3rem;
+    }
+    .total_time {
+      font-size: 1rem;
+    }
+    .splits {
+      margin: .5rem;
     }
   }
 </style>
