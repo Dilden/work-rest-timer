@@ -52,7 +52,7 @@
     disabled = true;
     addActiveSplit(`${hr}:${min}:${s}:${ms}`);
     const now = Date.now();
-    const beepStart = elapsed * factor; // TODO don't use factor on rest if stop button pressed
+    const beepStart = elapsed;
     const end = now + beepStart;
 
     // Only play the 3.5s audio file if less time than that has passed
@@ -108,6 +108,7 @@
       countUp();
     }
     else{
+      elapsed = elapsed * factor;
       countDown();
     }
     if(!totalInterval) {
@@ -124,6 +125,7 @@
   }
   const stop = () => {
     timerStop();
+    running = !running;
     disabled = false;
   }
   const reset = () => {
