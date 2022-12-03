@@ -89,6 +89,9 @@ const config = {
       // set an alias so images can be dynamically imported
       $static: path.resolve('./static'),
     }
+  },
+  build: {
+    modulePreload: false
   }
 };
 

@@ -7,6 +7,7 @@
   let oldElapsed = 0;
   let factor = 1;
   let disabled = false;
+//let prevState = null; // TODO track previous state of timer; e.g. up or down
 
   let totalElapsed = 0;
   let totalOldElapsed = 0;
@@ -125,6 +126,7 @@
   }
   const stop = () => {
     timerStop();
+    }
     running = !running;
     disabled = false;
   }
