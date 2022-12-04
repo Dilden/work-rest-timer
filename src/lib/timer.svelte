@@ -7,7 +7,7 @@
   let oldElapsed = 0;
   let factor = 1;
   let disabled = false;
-//let prevState = null; // TODO track previous state of timer; e.g. up or down
+  let stopped = false;
 
   let totalElapsed = 0;
   let totalOldElapsed = 0;
@@ -36,6 +36,7 @@
   const countUp = () => {
     running = true;
     disabled = false;
+    stopped = false;
     let startTime = Date.now();
 
     interval = setInterval(() => {
@@ -53,8 +54,9 @@
     disabled = true;
     addActiveSplit(`${hr}:${min}:${s}:${ms}`);
     const now = Date.now();
-    const beepStart = elapsed;
+    const beepStart = (stopped ? elapsed : elapsed * factor);
     const end = now + beepStart;
+    stopped = false;
 
     // Only play the 3.5s audio file if less time than that has passed
     if(beepStart >= 3500) {
@@ -109,7 +111,6 @@
       countUp();
     }
     else{
-      elapsed = elapsed * factor;
       countDown();
     }
     if(!totalInterval) {
@@ -126,9 +127,14 @@
   }
   const stop = () => {
     timerStop();
+    if(!disabled) {
+      running = false;
     }
-    running = !running;
+    else {
+      running = true;
+    }
     disabled = false;
+    stopped = true;
   }
   const reset = () => {
     totalS = s = totalMin = min = totalHr = hr = pad2(0);
@@ -137,6 +143,7 @@
     
     running = false;
     disabled = false;
+    stopped = false;
 
     activeSplits = restSplits = [];
 
