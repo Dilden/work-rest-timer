@@ -51,8 +51,10 @@
 
   const countDown = () => {
     timerStop();
+    if(!stopped) {
+      addActiveSplit(`${hr}:${min}:${s}:${ms}`);
+    }
     disabled = true;
-    addActiveSplit(`${hr}:${min}:${s}:${ms}`);
     const now = Date.now();
     const beepStart = (stopped ? elapsed : elapsed * factor);
     const end = now + beepStart;
@@ -297,7 +299,8 @@
   @media screen and (max-width: 750px) {
     .rest_factor label, .rest_factor label:nth-child(3), .rest_factor label:last-child {
       border-radius: 0;
-      min-width: 72px;
+      min-width: 45px;
+      font-size: .8rem;
     }
     .rest_factor {
       grid-row: 1 / 3;
@@ -311,6 +314,9 @@
     }
     .splits {
       margin: .5rem;
+    }
+    button {
+      padding: 1rem;
     }
   }
 </style>

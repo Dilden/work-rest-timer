@@ -18,7 +18,7 @@ const config = {
       includeAssets: ['beep.wav', 'timer.png', 'favicon.png', 'icon-512.png', 'timer-512.png', 'apple-touch-icon.png', 'timer-180.png', 'timer-190.png', 'timer-192.png', 'timer-196.png', 'timer-300.png'],
       manifest: {
         name: 'Work Rest Timer',
-        short_name: 'timer',
+        short_name: 'Work_Rest_Timer',
         description: 'A timer that tracks active + rest time. And it reminds you to start!',
         theme_color: '#000000',
         background_color: '#213439',
@@ -33,6 +33,11 @@ const config = {
           {
             src: 'icon-512.png',
             sizes: '512x512',
+            type: 'image/png'
+          },
+          {
+            src: 'apple-touch-icon.png',
+            sizes: '180x180',
             type: 'image/png'
           },
           {
