@@ -1,5 +1,5 @@
 <script>
-  import '../../static/globals.css';
+  import '$static/globals.css';
   import { onMount } from 'svelte';
   import { pwaInfo } from 'virtual:pwa-info';
 
