@@ -319,4 +319,27 @@
       padding: 1rem;
     }
   }
+  @media screen and (max-width: 475px) {
+    .controls {
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+    }
+    .rest_factor {
+      grid-row: 4 / 5;
+      grid-column: 2 / 5;
+    }
+    .rest_factor label {
+      min-width: auto;
+    }
+    button.start, button.rest {
+      grid-column: 2 / 5;
+    }
+    button.stop {
+      grid-column: 2 / 5;
+    }
+    button.reset {
+      grid-row: 3 / 4;
+      grid-column: 2 / 5;
+    }
+  }
+
 </style>
