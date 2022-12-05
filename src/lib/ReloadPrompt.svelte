@@ -3,15 +3,15 @@
 
   const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW({
     onRegistered(swr) {
-        // uncomment to poll for updates
-        swr && setInterval(() => {
-           console.log('Checking for sw update')
-           swr.update()
-        }, 200000 /* 20s for testing purposes */)
+        //// uncomment to poll for updates
+        //swr && setInterval(() => {
+        //   console.log('Checking for sw update')
+        //   swr.update()
+        //}, 200000 /* 20s for testing purposes */)
       console.log(`SW registered: ${swr}`);
     },
     onRegisterError(error) {
-      console.log('SW registration error', error);
+      console.log('SW registration error: ', error);
     }
   });
 

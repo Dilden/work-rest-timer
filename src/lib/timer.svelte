@@ -327,7 +327,7 @@
       grid-row: 4 / 5;
       grid-column: 2 / 5;
     }
-    .rest_factor label {
+    .rest_factor label, .rest_factor label:nth-child(3), .rest_factor label:last-child {
       min-width: auto;
     }
     button.start, button.rest {
