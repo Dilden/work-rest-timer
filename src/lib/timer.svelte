@@ -196,7 +196,7 @@
   }
   .time {
     margin: 1.5rem;
-    font-size: 4rem;
+    font-size: 5rem;
   }
   .intervals {
     text-transform: uppercase;
@@ -307,7 +307,7 @@
     }
     .time {
       margin: .8rem;
-      font-size: 3rem;
+      font-size: 4rem;
     }
     .total_time {
       font-size: 1rem;
@@ -322,6 +322,9 @@
   @media screen and (max-width: 475px) {
     .controls {
       grid-template-rows: 1fr 1fr 1fr 1fr;
+    }
+    .time {
+      font-size: 3rem;
     }
     .rest_factor {
       grid-row: 4 / 5;
