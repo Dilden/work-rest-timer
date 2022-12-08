@@ -1,11 +1,6 @@
 <script>
-  import { onMount } from 'svelte';
   import { pwaInfo } from 'virtual:pwa-info';
-
-  let ReloadPrompt;
-  onMount(async() => {
-      pwaInfo && (ReloadPrompt = (await import('$lib/ReloadPrompt.svelte')).default)
-    });
+  import ReloadPrompt from '$lib/ReloadPrompt.svelte';
 
   $: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 </script>
@@ -16,6 +11,4 @@
 
 <slot></slot>
 
-{#if ReloadPrompt}
-  <svelte:component this={ReloadPrompt} />
-{/if}
+<ReloadPrompt />
