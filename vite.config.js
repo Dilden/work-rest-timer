@@ -23,7 +23,7 @@ const config = {
         theme_color: '#ffffff',
         background_color: '#213439',
         start_url: '/',
-        display: 'fullscreen',
+        display: 'standalone',
         icons: [
           {
             src: 'timer.png',
