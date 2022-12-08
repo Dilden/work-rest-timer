@@ -1,5 +1,4 @@
 <script>
-  import '$static/globals.css';
   import { onMount } from 'svelte';
   import { pwaInfo } from 'virtual:pwa-info';
 
@@ -15,7 +14,7 @@
   {@html webManifest}
 </svelte:head>
 
-<slot />
+<slot></slot>
 
 {#if ReloadPrompt}
   <svelte:component this={ReloadPrompt} />
