@@ -4,9 +4,10 @@
 
  
 <div class='content'>
+  <div></div>
   <Timer />
   <div class='built'>
-     🔨 built by <a href='https://www.closingtags.com' rel='noreferrer' target='_blank'>closingtags.com</a>
+     🔨 built by <a href='https://www.closingtags.com/svelte-workrest-timer/' rel='noreferrer' target='_blank'>closingtags.com</a>
   </div>
 </div>
 

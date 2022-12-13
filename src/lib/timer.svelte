@@ -156,39 +156,40 @@
 
 </script>
 
-<h1>Work:Rest Timer</h1>
+<div>
+  <h1>Work:Rest Timer</h1>
 
-<div class='time'>{hr}:{min}:{s}.{ms}</div>
-<div class='total_time'>{totalHr}:{totalMin}:{totalS}.{totalMs}</div>
+  <div class='time'>{hr}:{min}:{s}.{ms}</div>
+  <div class='total_time'>{totalHr}:{totalMin}:{totalS}.{totalMs}</div>
 
-<div class='controls'>
-  <button class='start_button {running ? `rest` : `start`}' disabled={disabled ? `disabled` : ``} on:click={start}>{running ? `rest` : `start`}</button>
-  <button class='stop' on:click={stop}>stop</button>
-  <button class='reset' on:click={reset}>reset</button>
-  <div class='rest_factor'>
-    <p>Rest Multiplier</p>
-    <input type='radio' id='1X' name='factor' bind:group={factor} value={1} checked><label for='1X'>1X</label><input type='radio' id='1.5X' name='factor' bind:group={factor} value={1.5}><label for='1.5X'>1.5X</label><input type='radio' id='2X' name='factor' bind:group={factor} value={2}><label for='2X'>2X</label><input type='radio' id='3X' name='factor' bind:group={factor} value={3}><label for='3X'>3X</label>
+  <div class='controls'>
+    <button class='start_button {running ? `rest` : `start`}' disabled={disabled ? `disabled` : ``} on:click={start}>{running ? `rest` : `start`}</button>
+    <button class='stop' on:click={stop}>stop</button>
+    <button class='reset' on:click={reset}>reset</button>
+    <div class='rest_factor'>
+      <p>Rest Multiplier:&nbsp;<b>{factor}X</b></p>
+      <input type='range' id='1X' name='factor' bind:value={factor} min=".5" step=".5" max="5">
+    </div>
+  </div>
+  <div class='intervals'>
+    <div class='splits active'>
+      <h3>Active Intervals</h3>
+      <ul>
+        {#each activeSplits as split, i}
+          <li>{(i+1) + `) ` + split}</li>
+        {/each}
+      </ul>
+    </div>
+    <div class='splits rest'>
+      <h3>Rest Intervals</h3>
+      <ul>
+        {#each restSplits as split, i}
+          <li>{(i+1) + `) ` + split}</li>
+        {/each}
+      </ul>
+    </div>
   </div>
 </div>
-<div class='intervals'>
-  <div class='splits active'>
-    <h3>Active Intervals</h3>
-    <ul>
-      {#each activeSplits as split, i}
-        <li>{(i+1) + `) ` + split}</li>
-      {/each}
-    </ul>
-  </div>
-  <div class='splits rest'>
-    <h3>Rest Intervals</h3>
-    <ul>
-      {#each restSplits as split, i}
-        <li>{(i+1) + `) ` + split}</li>
-      {/each}
-    </ul>
-  </div>
-</div>
-
 <style>
   h1 {
     text-align: center;
@@ -265,45 +266,35 @@
     grid-row: 1 / 2;
     text-transform: uppercase;
     vertical-align: top;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  .rest_factor p b {
+    font-size: 1.6rem;
   }
   .rest_factor input {
-    display: none;
-  }
-  .rest_factor input:checked+label {
-    background-color: #3e3c3c;
-    box-shadow: inset 0 0 5px black;
-  }
-  .rest_factor label {
-    display: inline-block;
-    padding: 1rem;
-    background-color: gray;
-    margin: 0;
-    transition: all .3s ease-in-out;
-    border: solid 1px black;
-  }
-  .rest_factor label:hover {
-    background-color: #666262;
-  }
-  .rest_factor label:nth-child(3) {
-    border-radius: 1rem 0 0 1rem;
-  }
-  .rest_factor label:last-child {
-    border-radius: 0 1rem 1rem 0;
+    width: 95%;
+    font-size: 2rem;
   }
 
   @media screen and (max-width: 1200px) {
     .controls {
       grid-template-columns: .05fr 1fr 1fr 1fr .05fr;
     }
+    .rest_factor {
+      font-size: 1.1rem;
+    }
+    .rest_factor p b {
+      font-size: 1.3rem;
+    }
   }
   @media screen and (max-width: 750px) {
-    .rest_factor label, .rest_factor label:nth-child(3), .rest_factor label:last-child {
-      border-radius: 0;
-      min-width: 45px;
-      font-size: .8rem;
-    }
     .rest_factor {
       grid-row: 1 / 3;
+      font-size: 1rem;
+    }
+    .rest_factor p b {
+      font-size: 1.1rem;
     }
     .time {
       margin: .8rem;
@@ -329,9 +320,6 @@
     .rest_factor {
       grid-row: 4 / 5;
       grid-column: 2 / 5;
-    }
-    .rest_factor label, .rest_factor label:nth-child(3), .rest_factor label:last-child {
-      min-width: auto;
     }
     button.start, button.rest {
       grid-column: 2 / 5;
