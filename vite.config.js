@@ -13,7 +13,7 @@ const config = {
         enabled: true
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,wav}']
+        globPatterns: ['**/*.{js,css,html,ico,png,wav}']
       },
       includeAssets: ['beep.wav', 'timer.png', 'favicon.ico', 'favicon.png', 'icon-512.png', 'timer-512.png', 'apple-touch-icon.png', 'timer-180.png', 'timer-190.png', 'timer-192.png', 'timer-196.png', 'timer-300.png'],
       manifest: {
@@ -21,7 +21,7 @@ const config = {
         short_name: 'WorkRestTimer',
         description: 'A timer that tracks active + rest time. And it reminds you to start!',
         theme_color: '#ffffff',
-        background_color: '#213439',
+        background_color: '#ffffff',
         start_url: '/',
         display: 'standalone',
         icons: [
