@@ -10,7 +10,7 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-static": "next",
+		"@sveltejs/adapter-static": "^1.0.1",
 		"@sveltejs/kit": "^1.0.11",
 		"@vite-pwa/sveltekit": "^0.1.2",
 		"@vitejs/plugin-basic-ssl": "^1.0.1",
