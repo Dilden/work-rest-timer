@@ -36,3 +36,6 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+## Deploying
+To deploy this application to a static hosting provider, you'll first need to make an adjustment to the build. For some reason, the prerendered HTML document is not included in the `build/` directory. See [this post](https://www.closingtags.com/prerendered-pains/) for information related to the problem. The workaround is as simple as copying `.sveltekit-kit/output/prerender/pages/index.html` to `build/index.html`. Once done, you can then copy `build/` on to the root web directory of your static host.
