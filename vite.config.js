@@ -27,53 +27,53 @@ const config = {
         icons: [
           {
             src: 'timer.png',
-            sizes: '1000x1000',
+            sizes: '1100x1100',
             type: 'image/png'
           },
           {
             src: 'icon-512.png',
-            sizes: '512x512',
+            sizes: '564x564',
             type: 'image/png',
             purpose: 'any maskable'
           },
           {
             src: 'apple-touch-icon.png',
-            sizes: '180x180',
+            sizes: '198x198',
             type: 'image/png'
           },
           {
             src: 'timer-512.png',
-            sizes: '512x512',
+            sizes: '564x564',
             type: 'image/png'
           },
           {
             src: 'timer-196.png',
-            sizes: '196x196',
+            sizes: '216x216',
             type: 'image/png'
           },
           {
             src: 'timer-192.png',
-            sizes: '192x192',
+            sizes: '212x212',
             type: 'image/png'
           },
           {
             src: 'timer-190.png',
-            sizes: '190x190',
+            sizes: '209x209',
             type: 'image/png'
           },
           {
             src: 'timer-180.png',
-            sizes: '180x180',
+            sizes: '198x198',
             type: 'image/png'
           },
           {
             src: 'timer-64.png',
-            sizes: '64x64',
+            sizes: '71x71',
             type: 'image/png'
           },
           {
             src: 'timer-32.png',
-            sizes: '32x32',
+            sizes: '36x36',
             type: 'image/png'
           },
           {
